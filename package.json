@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "jest": "^29.3.1",
+    "jest-environment-puppeteer": "^6.1.1",
+    "jest-puppeteer": "^6.1.1",
+    "puppeteer": "^19.3.0",
+    "randexp": "^0.5.3"
+  },
+  "name": "femploy-ui-test",
+  "description": "test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "e2e": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidgh86/femploy-ui-test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidgh86/femploy-ui-test/issues"
+  },
+  "homepage": "https://github.com/davidgh86/femploy-ui-test#readme"
+}
