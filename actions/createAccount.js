@@ -12,12 +12,15 @@ class createAccount {
     this.signupFormPasswordText = "#signUpFormPassword";
     this.signupAcceptCheck = "#signUpFormAcceptConditions";
     this.signupBtn = "#signUpFormSignUp";
-    this.avatarItem = "#avatar"
+    
   }
 
   async signup( username, email, password ) {
     try {
-      await page.goto(this.url);
+      if(this.url !== page.url()){
+        await page.goto(this.url);
+      }
+      
       await page.click(this.loginBtn)
       await page.waitForSelector(this.continueWithMailButton, {visible: true})
       await page.waitForTimeout(1000)
@@ -43,15 +46,10 @@ class createAccount {
       
       await page.click(this.signupBtn)
       await page.waitForTimeout(2000)
-
-      await page.$(this.avatarItem)
-
-      return true
       
     } catch ( err ) {
       console.log( chalk.red( 'ERROR => ', err ) );
     }
-    return false
 
   }
 }

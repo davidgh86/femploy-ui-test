@@ -3,9 +3,21 @@ const RandExp = require('randexp');
 
 module.exports = ( ) => {
     
-    let username = new RandExp(regexp.validUserName).gen();
-    let email = new RandExp(regexp.validEmail).gen();
-    let password = new RandExp(regexp.validPassword).gen();
+    let username;
+    let email;
+    let password;
+
+    do {
+        username = new RandExp(regexp.validUserName).gen();
+    } while (!username.match(regexp.validUserName))
+
+    do {
+        password = new RandExp(regexp.validPassword).gen();
+    } while (!password.match(regexp.validPassword))
+
+    do {
+        email = new RandExp(regexp.validEmail).gen();
+    } while (!email.match(regexp.validEmail))
 
     username = String( username );
     password = String( password );
