@@ -1,4 +1,5 @@
 const chalk = require( 'chalk' );
+const url = require('url');
 
 class createAccount {
   constructor( page ) {
@@ -17,7 +18,7 @@ class createAccount {
 
   async signup( username, email, password ) {
     try {
-      if(this.url !== page.url()){
+      if((new URL(this.url)).href !== (new URL(page.url())).href){
         await page.goto(this.url);
       }
       

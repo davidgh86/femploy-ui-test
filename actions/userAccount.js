@@ -1,4 +1,5 @@
 const chalk = require( 'chalk' );
+const url = require('url');
 
 class userAccount {
   constructor( page ) {
@@ -15,7 +16,7 @@ class userAccount {
 
   async logout() {
     try {
-      if(this.url !== page.url()){
+      if((new URL(this.url)).href !== (new URL(page.url())).href){
         await page.goto(this.url);
       }
       await page.click(this.avatar)

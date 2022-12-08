@@ -1,10 +1,19 @@
-let credentials = require( '../utils/credentials' );
-let createAccount = require( '../actions/createAccount' );
-let loginAccount = require( '../actions/loginAccount' );
-let userAccount = require( '../actions/userAccount' );
-let commonAction = require('../actions/commonAction');
+const credentials = require( '../utils/credentials' );
+const createAccount = require( '../actions/createAccount' );
+const loginAccount = require( '../actions/loginAccount' );
+const userAccount = require( '../actions/userAccount' );
+const commonAction = require('../actions/commonAction');
 
 jest.setTimeout(120000);
+
+let credential
+let createAccountService
+let loginAccountService
+let userAccountService
+let commonActionService
+
+let logInIfNotLogged
+let logOutIfLogged
 
 describe('Basic authentication e2e tests', () => {
 
@@ -18,62 +27,47 @@ describe('Basic authentication e2e tests', () => {
     } );
 
     page.goto("http://localhost:8080")
+    page.waitForTimeout(2000)
 		
-    credential = credentials();	
-    createAccount = await createAccount( page );
-    loginAccount = await loginAccount( page );
-    userAccount = await userAccount(page)
-    commonAction = await commonAction(page);
+    this.credential = credentials();	
+    this.createAccountService = await createAccount( page );
+    this.loginAccountService = await loginAccount( page );
+    this.userAccountService = await userAccount(page)
+    this.commonActionService = await commonAction(page);
 
-    let logInIfNotLogged = async () => {
-      if (! await commonAction.isLoggedIn()) {
-        await loginAccount.login(credential.email, credential.password);
+    this.logInIfNotLogged = async () => {
+      if (! await this.commonActionService.isLoggedIn()) {
+        await this.loginAccountService.login(this.credential.email, this.credential.password);
       }
     }
     
-    let logOutIfLogged = async () => {
-      if (await commonAction.isLoggedIn()) {
-        await userAccount.logout();
+    this.logOutIfLogged = async () => {
+      if (await this.commonActionService.isLoggedIn()) {
+        await this.userAccountService.logout();
       }
     }
     
-    logOutIfLogged()
-    await createAccount.signup( credential.username, credential.email, credential.password );
-    let isLoggedIn = await commonAction.isLoggedIn()
+    await this.logOutIfLogged()
+    await this.createAccountService.signup( this.credential.username, this.credential.email, this.credential.password );
+    let isLoggedIn = await this.commonActionService.isLoggedIn()
     expect(isLoggedIn).toBe(true)
-    await userAccount.logout();
+    await this.userAccountService.logout();
     await page.waitForTimeout(2000);
   });
-	
-  // it( 'Should be able to create an account', async () => {
-  //   logOutIfLogged()
-  //   await createAccount.signup( credential.username, credential.email, credential.password );
-  //   let isLoggedIn = await commonAction.isLoggedIn()
-  //   expect(isLoggedIn).toBe(true)
-  //   await userAccount.logout();
-  //   isLoggedIn = await commonAction.isLoggedIn()
-  //   expect(isLoggedIn).toBe(false)
-  //   await loginAccount.login(credential.email, credential.password);
-  //   isLoggedIn = await commonAction.isLoggedIn()
-  //   expect(isLoggedIn).toBe(true)
-  //   await userAccount.logout();
-  //   isLoggedIn = await commonAction.isLoggedIn()
-  //   expect(isLoggedIn).toBe(false)
-  // });
 
   it( 'Should be able to logout', async () => {
-    logInIfNotLogged()
-    await userAccount.logout();
-    let isLoggedIn = await commonAction.isLoggedIn()
+    this.logInIfNotLogged()
+    await this.userAccountService.logout();
+    let isLoggedIn = await this.commonActionService.isLoggedIn()
     expect(isLoggedIn).toBe(false)
   });
 
 
   it( 'Should not be able to login', async () => {
-    logOutIfLogged()
-    await loginAccount.login(credential.email, credential.password+"wrongpassword");
-    let alertMessage = await commonAction.checkAlertMessage()
-    let isLoggedIn = await commonAction.isLoggedIn()
+    this.logOutIfLogged()
+    await this.loginAccountService.login(this.credential.email, this.credential.password+"wrongpassword");
+    let alertMessage = await this.commonActionService.checkAlertMessage()
+    let isLoggedIn = await this.commonActionService.isLoggedIn()
     expect(alertMessage).toBe("\"notValidCredentials\"")
     expect(isLoggedIn).toBe(false)
   });
