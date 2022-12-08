@@ -21,9 +21,9 @@ class userAccount {
       }
       await page.click(this.avatar)
       await page.waitForSelector(this.logoutSessionItemMenu, {visible: true})
-      await page.waitForTimeout(1000)
+      await page.waitForTimeout(2000)
       await page.click(this.logoutSessionItemMenu)
-      await page.waitForTimeout(1000)
+      await page.waitForTimeout(2000)
       
     } catch ( err ) {
       console.log( chalk.red( 'ERROR => ', err ) );

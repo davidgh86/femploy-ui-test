@@ -56,7 +56,7 @@ describe('Basic authentication e2e tests', () => {
   });
 
   it( 'Should be able to logout', async () => {
-    this.logInIfNotLogged()
+    await this.logInIfNotLogged()
     await this.userAccountService.logout();
     let isLoggedIn = await this.commonActionService.isLoggedIn()
     expect(isLoggedIn).toBe(false)
@@ -64,7 +64,7 @@ describe('Basic authentication e2e tests', () => {
 
 
   it( 'Should not be able to login', async () => {
-    this.logOutIfLogged()
+    await this.logOutIfLogged()
     await this.loginAccountService.login(this.credential.email, this.credential.password+"wrongpassword");
     let alertMessage = await this.commonActionService.checkAlertMessage()
     let isLoggedIn = await this.commonActionService.isLoggedIn()
